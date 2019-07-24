@@ -3,9 +3,10 @@ import re
 from locale import normalize
 
 from django.template import loader, TemplateDoesNotExist
-from django.template.base import Node, Context, TemplateSyntaxError
+from django.template.base import Variable, Node, Context, TemplateSyntaxError
 from django.utils.encoding import smart_text
 from django.utils.translation import get_language, to_locale
+from django.conf import settings
 
 try:
     from django.template import Library
@@ -81,7 +82,10 @@ class SocialWidgetNode(Node):
 
         try:
             template_path = args[0]
-        except IndexError:
+        except IndexError as e:
+            # this shouldn't happen dude !
+            if settings.DEBUG:
+                raise
             return ''
 
         template = 'social_widgets/%s' % template_path
@@ -113,8 +117,10 @@ class SocialWidgetNode(Node):
 
         try:
             t = loader.get_template(template)
-            return t.render(Context(kwargs))
-        except TemplateDoesNotExist:
+            return t.render(kwargs)
+        except TemplateDoesNotExist as e:
+            if settings.DEBUG:
+                raise
             return ''
 
 
@@ -147,15 +153,17 @@ def social_widget_render(parser, token):
                 raise TemplateSyntaxError("Malformed arguments to %s tag" %
                                           tag_name)
             name, value = match.groups()
-
+            var = Variable(value)
             if name:
                 # Replacing hyphens with underscores because
                 # variable names cannot contain hyphens.
                 name = name.replace('-', '_')
-                kwargs[name] = parser.compile_filter(value)
+                #kwargs[name] = parser.compile_filter(value)
+                kwargs[name] = var
             else:
-                args.append(parser.compile_filter(value))
-
+                #args.append(parser.compile_filter(value))
+                args.append(var)
+    
     return SocialWidgetNode(args, kwargs)
 
 
