@@ -1,9 +1,13 @@
 {% extends "social_widgets/facebook/_base.html" %}
+{% load i18n %}
 {% load social_widgets %}
 {% block widget %}
 <div class="fb-share-button"
      data-href="{{ href }}"
      data-size="{{ size|default:"large" }}"
      data-layout="{{ layout|default:"button" }}">
+  
+  <a target="_blank"
+     href="https://www.facebook.com/sharer/sharer.php?u={{ href }}&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Partager</a>
 </div>
 {% endblock widget %}
