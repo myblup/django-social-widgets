@@ -1,0 +1,8 @@
+{% load social_widgets %}
+{% load i18n %}
+{% social_get_facebook_locale locale as locale %}
+{% if nojs or widget_service in social_widgets_javascript %}
+  {# Do not load JavaScript then #}
+{% else %}
+  <script src="https://platform.linkedin.com/in.js" type="text/javascript">lang: en_US</script>
+{% endif %}

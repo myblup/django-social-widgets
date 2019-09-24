@@ -1,0 +1,10 @@
+{# https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/plugins/share-plugin #}
+{% load social_widgets %}
+{% load i18n %}
+{% social_get_facebook_locale locale as locale %}
+{% if nojs or widget_service in social_widgets_javascript %}
+  {# Do not load JavaScript then #}
+{% else %}
+  <script src="https://platform.linkedin.com/in.js" type="text/javascript">lang: {{ locale|default:"en_US" }}</script>
+{% endif %}
+<script type="IN/Share" data-url="{{ href }}"></script>

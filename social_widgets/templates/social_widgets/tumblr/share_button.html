@@ -1,0 +1,24 @@
+{# https://www.tumblr.com/docs/en/share_button #}
+{% load social_widgets %}
+{% load i18n %}
+{% social_get_facebook_locale locale as locale %}
+{% if nojs or widget_service in social_widgets_javascript %}
+  {# Do not load JavaScript then #}
+{% else %}
+  <script id="tumblr-js" async src="https://assets.tumblr.com/share-button.js"></script>
+{% endif %}
+<a class="tumblr-share-button" href="https://www.tumblr.com/share"
+   data-locale="{{ locale|default:"en_US" }}"
+   data-color="{{ color|default:"blue" }}"
+   data-href="{{ href }}"
+   data-posttype="link" {# I assume this is what we want ? #}
+   data-content="{{ href }}"
+   data-caption="{{ text }}"
+   {% if tags %}data-tags="{{ tags }}"{% endif %}
+   {# What do we want here ??? #}
+   {#data-title=""#}
+>
+  
+</a>
+
+{#<p>{{ tags|default:"da fuck ?" }}</p>#}

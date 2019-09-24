@@ -1,0 +1,10 @@
+{# https://www.tumblr.com/docs/fr/share_button #}
+{% load social_widgets %}
+{% load i18n %}
+{% social_get_facebook_locale locale as locale %}
+{% if nojs or widget_service in social_widgets_javascript %}
+  {# Do not load JavaScript then #}
+{% else %}
+  <script id="tumblr-js" async src="https://assets.tumblr.com/share-button.js"></script>
+{% endif %}
+<script type="IN/Share" data-url="{{ href }}"></script>
